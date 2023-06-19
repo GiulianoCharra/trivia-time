@@ -7,6 +7,7 @@
 :root {
   --btn-green: rgba(39, 181, 39, 0.509);
   --btn-red: rgba(181, 39, 39, 0.509);
+  --relog-size: 200px;
 }
 
 html {
@@ -30,7 +31,7 @@ header {
 
 .relog {
   left: calc(50vw - 120px);
-  width: 200px;
+  width: var(--relog-size);
   aspect-ratio: 1;
   background-color: white;
   border: 5px solid black;
@@ -64,17 +65,17 @@ header {
 
 .hora {
   width: 7px;
-  height: 60px;
+  height: calc(var(--relog-size) * 0.3);
 }
 
 .minuto {
   width: 5px;
-  height: 80px;
+  height: calc(var(--relog-size) * 0.4);
 }
 
 .segundo {
   width: 2px;
-  height: 90px;
+  height: calc(var(--relog-size) * 0.45);
 }
 
 .seccion {
@@ -180,8 +181,7 @@ header {
 .pregunta__datos {
   width: 100%;
   display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .pregunta__botones {
