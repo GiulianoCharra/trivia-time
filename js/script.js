@@ -83,62 +83,70 @@ const imagenes = {
   genio: "./img/genio.png",
 };
 
-btnIngresarNombre.addEventListener("click", () => {
-  let inputNombre = document.getElementById("input-nombre");
-  var nombre = inputNombre.value;
-  inputNombre.value = "";
-  if (nombre.trim() === "") {
-    nombre = "Batman";
-  }
-  spanNombreJugador.innerText = nombre;
+document.addEventListener("DOMContentLoaded", () => {
+  btnIngresarNombre.addEventListener("click", () => {
+    let inputNombre = document.getElementById("input-nombre");
+    var nombre = inputNombre.value;
+    inputNombre.value = "";
+    if (nombre.trim() === "") {
+      nombre = "Batman";
+    }
+    spanNombreJugador.innerText = nombre;
 
-  hidden(formNombre);
-  show(menuOpciones);
-});
+    hidden(formNombre);
+    show(menuOpciones);
+  });
 
-btnCambiarNombre.addEventListener("click", () => {
-  show(formNombre);
-  hidden(menuOpciones);
-});
+  btnCambiarNombre.addEventListener("click", () => {
+    show(formNombre);
+    hidden(menuOpciones);
+  });
 
-btnJugar.addEventListener("click", () => {
-  hidden(divMenuPrincipal);
-  jugar();
-  show(divPartida);
-  show(divPreguntas);
-});
+  btnJugar.addEventListener("click", () => {
+    hidden(divMenuPrincipal);
+    jugar();
+    show(divPartida);
+    show(divPreguntas);
+  });
 
-btnReiniciar.addEventListener("click", () => {
-  preguntas = [];
-  preguntaActual = null;
-  preguntasCorrectas = 0;
-  preguntasIncorrectas = 0;
-  clearInterval(intervaloPreguntaActual);
-  clearTimeout(finIntervaloPreguntaActual);
-  numeroPreguntaActual = 0;
-  numeroPreguntasNumeroTotal = 0;
-  resumenPreguntas = [];
+  btnReiniciar.addEventListener("click", () => {
+    preguntas = [];
+    preguntaActual = null;
+    preguntasCorrectas = 0;
+    preguntasIncorrectas = 0;
+    clearInterval(intervaloPreguntaActual);
+    clearTimeout(finIntervaloPreguntaActual);
+    numeroPreguntaActual = 0;
+    numeroPreguntasNumeroTotal = 0;
+    resumenPreguntas = [];
 
-  hidden(divResultados);
-  show(divPreguntas);
-  jugar();
-});
+    hidden(divResultados);
+    show(divPreguntas);
+    jugar();
+  });
 
-btnCancelar.addEventListener("click", () => {
-  preguntas = [];
-  preguntaActual = null;
-  preguntasCorrectas = 0;
-  preguntasIncorrectas = 0;
-  clearInterval(intervaloPreguntaActual);
-  clearTimeout(finIntervaloPreguntaActual);
-  numeroPreguntaActual = 0;
-  numeroPreguntasNumeroTotal = 0;
-  resumenPreguntas = [];
+  btnCancelar.addEventListener("click", () => {
+    preguntas = [];
+    preguntaActual = null;
+    preguntasCorrectas = 0;
+    preguntasIncorrectas = 0;
+    clearInterval(intervaloPreguntaActual);
+    clearTimeout(finIntervaloPreguntaActual);
+    numeroPreguntaActual = 0;
+    numeroPreguntasNumeroTotal = 0;
+    resumenPreguntas = [];
 
-  hidden(divPartida);
-  hidden(divPreguntas);
-  hidden(divResultados);
-  show(divMenuPrincipal);
+    hidden(divPartida);
+    hidden(divPreguntas);
+    hidden(divResultados);
+    show(divMenuPrincipal);
+  });
+
+  btnOpciones.forEach((btnOpcion) => {
+    btnOpcion.addEventListener("click", () => {
+      evaluarResultado(btnOpcion);
+    });
+  });
 });
 
 async function jugar() {
@@ -197,12 +205,6 @@ function cargarPregunta(pregunta) {
     spanOpciones[i].innerText = pregunta.opciones[i].texto;
   }
 }
-
-btnOpciones.forEach((btnOpcion) => {
-  btnOpcion.addEventListener("click", () => {
-    evaluarResultado(btnOpcion);
-  });
-});
 
 function evaluarResultado(btnOpcion) {
   btnOpciones.forEach((opcion) => (opcion.disabled = true));
@@ -292,9 +294,128 @@ function armarResumenPregunta(resultado) {
 }
 
 async function buscarPreguntas() {
-  let response = await fetch("./js/preguntas.json");
-  let json = await response.json();
-  let dataPreguntas = desordenarPreguntas(json.data);
+  let dataPreguntas = [];
+
+  try {
+    let response = await fetch("./js/preguntas.json");
+    let json = await response.json();
+    dataPreguntas = desordenarPreguntas(json.data);
+  } catch (error) {
+    console.log("Se produjo el siguiente error: ", error);
+    console.log("Se cargaran unas preguntas por defecto, pero estas seran limitdas");
+    dataPreguntas = [
+      {
+        numero: 1,
+        texto: "¿Cuál es la capital de Francia?",
+        opciones: [
+          { numero: 1, texto: "Roma" },
+          { numero: 2, texto: "Madrid" },
+          { numero: 3, texto: "París" },
+          { numero: 4, texto: "Berlín" },
+        ],
+        opcionCorrecta: 3,
+      },
+      {
+        numero: 2,
+        texto: "¿Cuál es el océano más grande del mundo?",
+        opciones: [
+          { numero: 1, texto: "Atlántico" },
+          { numero: 2, texto: "Pacífico" },
+          { numero: 3, texto: "Índico" },
+          { numero: 4, texto: "Ártico" },
+        ],
+        opcionCorrecta: 1,
+      },
+      {
+        numero: 3,
+        texto: "¿En qué año se llevó a cabo la Revolución Francesa?",
+        opciones: [
+          { numero: 1, texto: "1789" },
+          { numero: 2, texto: "1812" },
+          { numero: 3, texto: "1856" },
+          { numero: 4, texto: "1901" },
+        ],
+        opcionCorrecta: 1,
+      },
+      {
+        numero: 4,
+        texto: "¿Cuál es el país más grande del mundo en términos de superficie?",
+        opciones: [
+          { numero: 1, texto: "Rusia" },
+          { numero: 2, texto: "Estados Unidos" },
+          { numero: 3, texto: "Canadá" },
+          { numero: 4, texto: "China" },
+        ],
+        opcionCorrecta: 1,
+      },
+      {
+        numero: 5,
+        texto: "¿Cuál es el autor de la novela 'Cien años de soledad'?",
+        opciones: [
+          { numero: 1, texto: "Gabriel García Márquez" },
+          { numero: 2, texto: "Jorge Luis Borges" },
+          { numero: 3, texto: "Julio Cortázar" },
+          { numero: 4, texto: "Mario Vargas Llosa" },
+        ],
+        opcionCorrecta: 1,
+      },
+      {
+        numero: 6,
+        texto: "¿Cuál es el planeta más cercano al Sol?",
+        opciones: [
+          { numero: 1, texto: "Mercurio" },
+          { numero: 2, texto: "Venus" },
+          { numero: 3, texto: "Marte" },
+          { numero: 4, texto: "Júpiter" },
+        ],
+        opcionCorrecta: 1,
+      },
+      {
+        numero: 7,
+        texto: "¿Cuál es el río más largo del mundo?",
+        opciones: [
+          { numero: 1, texto: "Amazonas" },
+          { numero: 2, texto: "Nilo" },
+          { numero: 3, texto: "Yangtsé" },
+          { numero: 4, texto: "Misisipi" },
+        ],
+        opcionCorrecta: 2,
+      },
+      {
+        numero: 8,
+        texto: "¿Cuál es la montaña más alta del mundo?",
+        opciones: [
+          { numero: 1, texto: "Monte Everest" },
+          { numero: 2, texto: "Monte Kilimanjaro" },
+          { numero: 3, texto: "Monte Aconcagua" },
+          { numero: 4, texto: "Monte McKinley" },
+        ],
+        opcionCorrecta: 1,
+      },
+      {
+        numero: 9,
+        texto: "¿Quién pintó la Mona Lisa?",
+        opciones: [
+          { numero: 1, texto: "Leonardo da Vinci" },
+          { numero: 2, texto: "Pablo Picasso" },
+          { numero: 3, texto: "Vincent van Gogh" },
+          { numero: 4, texto: "Michelangelo" },
+        ],
+        opcionCorrecta: 1,
+      },
+      {
+        numero: 10,
+        texto: "¿Cuál es el elemento químico con el número atómico 6?",
+        opciones: [
+          { numero: 1, texto: "Oxígeno" },
+          { numero: 2, texto: "Carbono" },
+          { numero: 3, texto: "Nitrógeno" },
+          { numero: 4, texto: "Hidrógeno" },
+        ],
+        opcionCorrecta: 2,
+      },
+    ];
+  }
 
   let i = 0;
   dataPreguntas.forEach((p) => {
