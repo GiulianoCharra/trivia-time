@@ -43,6 +43,7 @@ class Opcion {
 let divMenuPrincipal = document.getElementById("seccion-menu-principal");
 let divPreguntas = document.getElementById("seccion-preguntas");
 let divResultados = document.getElementById("seccion-resultados");
+let divPartida = document.getElementById("seccion-partida");
 
 let formNombre = document.getElementById("form-nombre");
 let menuOpciones = document.getElementById("menu-opciones");
@@ -77,9 +78,9 @@ let numeroPreguntaActual = 0;
 let numeroPreguntasNumeroTotal = 0;
 let resumenPreguntas = [];
 const imagenes = {
-  tonto: "../img/tonto.png",
-  inteligente: "../img/inteligente.png",
-  genio: "../img/genio.png",
+  tonto: "./img/tonto.png",
+  inteligente: "./img/inteligente.png",
+  genio: "./img/genio.png",
 };
 
 btnIngresarNombre.addEventListener("click", () => {
@@ -102,8 +103,9 @@ btnCambiarNombre.addEventListener("click", () => {
 
 btnJugar.addEventListener("click", () => {
   hidden(divMenuPrincipal);
-  show(divPreguntas);
   jugar();
+  show(divPartida);
+  show(divPreguntas);
 });
 
 btnReiniciar.addEventListener("click", () => {
@@ -117,6 +119,8 @@ btnReiniciar.addEventListener("click", () => {
   numeroPreguntasNumeroTotal = 0;
   resumenPreguntas = [];
 
+  hidden(divResultados);
+  show(divPreguntas);
   jugar();
 });
 
@@ -131,7 +135,9 @@ btnCancelar.addEventListener("click", () => {
   numeroPreguntasNumeroTotal = 0;
   resumenPreguntas = [];
 
+  hidden(divPartida);
   hidden(divPreguntas);
+  hidden(divResultados);
   show(divMenuPrincipal);
 });
 
@@ -230,18 +236,31 @@ function cargarResultados() {
   spanResultadoPreguntasCorrectas.textContent = preguntasCorrectas;
   spanResultadoPreguntasIncorrectas.textContent = preguntasIncorrectas;
   let porcentaje = (preguntasCorrectas / numeroPreguntasNumeroTotal) * 100;
-  porcentajeFormateado = porcentaje.toFixed(1);
-  spanResultadoPreguntasPorcentaje.textContent = porcentajeFormateado + "%";
+  let incremento = porcentaje / 100;
+  let acumulador = 0;
+
+  let setPorcentaje;
+
+  setTimeout(() => {
+    setPorcentaje = setInterval(() => {
+      acumulador += incremento;
+      spanResultadoPreguntasPorcentaje.textContent = acumulador.toFixed(1);
+    }, 10);
+
+    setTimeout(() => {
+      clearInterval(setPorcentaje);
+    }, 1000);
+  }, 1000);
 
   if (porcentaje <= 50) {
     imgResultado.src = imagenes.tonto;
   }
 
-  if (porcentaje > 50 && porcentaje <= 90) {
+  if (porcentaje > 50 && porcentaje < 90) {
     imgResultado.src = imagenes.inteligente;
   }
 
-  if (porcentaje > 90) {
+  if (porcentaje >= 90) {
     imgResultado.src = imagenes.genio;
   }
 
@@ -251,6 +270,7 @@ function cargarResultados() {
     element.innerHTML = resumen;
     fragment.appendChild(element);
   });
+  divResumenesPreguntas.innerHTML = "";
   divResumenesPreguntas.appendChild(fragment);
 
   show(divResultados);
@@ -278,9 +298,6 @@ async function buscarPreguntas() {
 
   let i = 0;
   dataPreguntas.forEach((p) => {
-    if (i == 3) {
-      return;
-    }
     i++;
     preguntas.push(
       new Pregunta(

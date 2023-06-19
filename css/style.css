@@ -78,7 +78,7 @@ header {
 }
 
 .seccion {
-  position: absolute;
+  /* position: absolute; */
   width: 100%;
   transition: transform 1s ease-in-out, opacity 400ms ease-in-out;
 }
@@ -160,6 +160,11 @@ header {
   outline-color: rgba(181, 39, 39);
 }
 
+.partida-contenedor {
+  display: grid;
+  justify-content: center;
+}
+
 .pregunta {
   display: grid;
   place-items: center;
@@ -175,11 +180,14 @@ header {
 .pregunta__datos {
   width: 100%;
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
 }
 
 .pregunta__botones {
   display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   gap: 30px;
 }
