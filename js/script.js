@@ -84,6 +84,8 @@ const imagenes = {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+  
+  
   btnIngresarNombre.addEventListener("click", () => {
     let inputNombre = document.getElementById("input-nombre");
     var nombre = inputNombre.value;
@@ -459,26 +461,3 @@ function hidden(element) {
   element.classList.remove("show");
   element.classList.add("hidden");
 }
-
-//Control del Relog
-function rotateClockHands() {
-  const now = new Date();
-  const hours = now.getHours();
-  const minutes = now.getMinutes();
-  const seconds = now.getSeconds();
-
-  const hourHand = document.getElementById("manesilla-hora");
-  const minuteHand = document.getElementById("manesilla-minuto");
-  const secondHand = document.getElementById("manesilla-segundo");
-
-  const hourRotation = 30 * hours + 0.5 * minutes; // 30 degrees per hour
-  const minuteRotation = 6 * minutes; // 6 degrees per minute
-  const secondRotation = 6 * seconds; // 6 degrees per second
-
-  hourHand.style.transform = `translate(-50%, -100%) rotate(${hourRotation}deg)`;
-  minuteHand.style.transform = `translate(-50%, -100%) rotate(${minuteRotation}deg)`;
-  secondHand.style.transform = `translate(-50%, -100%) rotate(${secondRotation}deg)`;
-}
-
-// Actualizar las manecillas cada segundo
-setInterval(rotateClockHands, 1000);
