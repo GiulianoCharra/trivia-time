@@ -84,8 +84,6 @@ const imagenes = {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  
-  
   btnIngresarNombre.addEventListener("click", () => {
     let inputNombre = document.getElementById("input-nombre");
     var nombre = inputNombre.value;
@@ -104,9 +102,9 @@ document.addEventListener("DOMContentLoaded", () => {
     hidden(menuOpciones);
   });
 
-  btnJugar.addEventListener("click", () => {
+  btnJugar.addEventListener("click", async () => {
     hidden(divMenuPrincipal);
-    jugar();
+    await jugar();
     show(divPartida);
     show(divPreguntas);
   });
