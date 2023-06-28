@@ -241,8 +241,6 @@ function cargarResultados() {
   spanResultadoPreguntasPorcentaje.textContent = 0;
   let porcentaje = (preguntasCorrectas / numeroPreguntasNumeroTotal) * 100;
   let incremento = porcentaje / 100;
-  console.log("Porcentaje:", porcentaje);
-  console.log("Incremento:", incremento);
   let acumulador = 0;
 
   let setPorcentaje;
@@ -250,7 +248,6 @@ function cargarResultados() {
   setTimeout(() => {
     setPorcentaje = setInterval(() => {
       acumulador = Number((acumulador + incremento).toFixed(2));
-      console.log(acumulador);
       if (acumulador >= porcentaje) {
         clearInterval(setPorcentaje);
       }
