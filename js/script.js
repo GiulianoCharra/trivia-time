@@ -166,6 +166,7 @@ function cargarSiguientePregunta() {
   intervaloPreguntaActual = setInterval(() => {
     segundosDuracionPregunta -= 1;
     spanTemporizador.textContent = segundosDuracionPregunta;
+    console.log(segundosDuracionPregunta);
   }, 1000);
 
   setFinIntervaloPregunta();
@@ -237,21 +238,24 @@ function cargarResultados() {
   spanPreguntaTotal.textContent = numeroPreguntasNumeroTotal;
   spanResultadoPreguntasCorrectas.textContent = preguntasCorrectas;
   spanResultadoPreguntasIncorrectas.textContent = preguntasIncorrectas;
+  spanResultadoPreguntasPorcentaje.textContent = 0;
   let porcentaje = (preguntasCorrectas / numeroPreguntasNumeroTotal) * 100;
   let incremento = porcentaje / 100;
+  console.log("Porcentaje:", porcentaje);
+  console.log("Incremento:", incremento);
   let acumulador = 0;
 
   let setPorcentaje;
 
   setTimeout(() => {
     setPorcentaje = setInterval(() => {
-      acumulador += incremento;
+      acumulador = Number((acumulador + incremento).toFixed(2));
+      console.log(acumulador);
+      if (acumulador >= porcentaje) {
+        clearInterval(setPorcentaje);
+      }
       spanResultadoPreguntasPorcentaje.textContent = acumulador.toFixed(1);
     }, 10);
-
-    setTimeout(() => {
-      clearInterval(setPorcentaje);
-    }, 1000);
   }, 1000);
 
   if (porcentaje <= 50) {
